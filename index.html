@@ -1,86 +1,132 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <title>Istrinya Ultraman</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CV — Nama Anda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#0f766e}
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:#0f172a;margin:0;padding:32px}
+        .page{max-width:900px;margin:0 auto}
+        .cv{display:grid;grid-template-columns:260px 1fr;gap:24px}
+        .panel{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+        .photo{width:100%;height:260px;background:linear-gradient(135deg,#06b6d4,#7c3aed);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:22px}
+        h1{font-size:20px;margin:0 0 6px}
+        .muted{color:var(--muted);font-size:13px}
+        .section{margin-bottom:18px}
+        .label{font-weight:600;color:#0f172a;margin-bottom:8px}
+        ul{padding-left:18px;margin:6px 0}
+        .skill{display:inline-block;background:#eef2f7;color:#0f172a;padding:6px 10px;border-radius:999px;font-size:13px;margin:4px 6px 0 0}
+        .contact-row{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted);margin-top:6px}
+        .content .item{margin-bottom:12px}
+        .job-title{font-weight:600}
+        .dates{color:var(--muted);font-size:13px}
+        .download{display:inline-block;margin-top:10px;padding:8px 12px;background:var(--accent);color:white;border-radius:8px;text-decoration:none;font-weight:600}
+
+        /* print */
+        @media print{
+            body{background:white;padding:0}
+            .page{max-width:100%;padding:0}
+            .cv{grid-template-columns:220px 1fr;gap:12px}
+            .panel{box-shadow:none;border-radius:0}
+            a[href]:after{content:""}
         }
 
-        body {
-            height: 100vh;
-            background: linear-gradient(135deg, #ff4e50, #fc913a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 50px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .btn {
-            margin-top: 30px;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 30px;
-            background: white;
-            color: #ff4e50;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #222;
-            color: white;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @media (max-width:700px){
+            .cv{grid-template-columns:1fr;}
+            .photo{height:160px}
         }
     </style>
 </head>
 <body>
+    <div class="page">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+            <div>
+                <h1 style="font-size:22px">Nama Anda</h1>
+                <div class="muted">Posisi yang diinginkan · Kota, Negara</div>
+            </div>
+            <div style="text-align:right">
+                <div class="muted">Diperbarui: Februari 2026</div>
+                <a class="download" href="#" onclick="window.print();return false">Cetak / Simpan PDF</a>
+            </div>
+        </div>
 
-    <div class="container">
-        <h1>Istrinya Ultraman 💖</h1>
-        <p>Wanita hebat yang selalu bersinar, bahkan lebih terang dari cahaya Ultra!</p>
-        <button class="btn">Kenalan Yuk</button>
+        <div class="cv">
+            <aside class="panel">
+                <div class="photo">Foto</div>
+
+                <div class="section" style="margin-top:14px">
+                    <div class="label">Kontak</div>
+                    <div class="contact-row">📧 email@domain.com</div>
+                    <div class="contact-row">📞 +62 812 3456 7890</div>
+                    <div class="contact-row">🔗 github.com/username</div>
+                    <div class="contact-row">🔗 linkedin.com/in/username</div>
+                </div>
+
+                <div class="section">
+                    <div class="label">Keahlian</div>
+                    <div>
+                        <span class="skill">HTML</span>
+                        <span class="skill">CSS</span>
+                        <span class="skill">JavaScript</span>
+                        <span class="skill">React</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="label">Bahasa</div>
+                    <div class="muted">Indonesia (Native)</div>
+                    <div class="muted">English (Professional)</div>
+                </div>
+            </aside>
+
+            <main class="panel content">
+                <div class="section">
+                    <div class="label">Ringkasan</div>
+                    <div class="muted">Saya adalah profesional di bidang ... (2-3 kalimat ringkas tentang pengalaman, pencapaian, dan target karier).</div>
+                </div>
+
+                <div class="section">
+                    <div class="label">Pengalaman Kerja</div>
+                    <div class="item">
+                        <div class="job-title">Posisi — Nama Perusahaan</div>
+                        <div class="dates">Jan 2021 — Sekarang · Kota</div>
+                        <div class="muted">- Ringkasan tanggung jawab dan pencapaian utama, mis. meningkatkan X sebesar Y%.</div>
+                    </div>
+
+                    <div class="item">
+                        <div class="job-title">Posisi — Perusahaan Sebelumnya</div>
+                        <div class="dates">Mei 2018 — Des 2020 · Kota</div>
+                        <div class="muted">- Ringkasan tanggung jawab dan pencapaian.</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="label">Pendidikan</div>
+                    <div class="item">
+                        <div class="job-title">Gelar — Nama Universitas</div>
+                        <div class="dates">2014 — 2018</div>
+                        <div class="muted">Jurusan, prestasi (jika ada)</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="label">Proyek / Portofolio</div>
+                    <ul>
+                        <li><strong>Proyek A</strong> — deskripsi singkat dan tautan.</li>
+                        <li><strong>Proyek B</strong> — deskripsi singkat dan tautan.</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="label">Referensi</div>
+                    <div class="muted">Tersedia atas permintaan.</div>
+                </div>
+            </main>
+        </div>
     </div>
 
 </body>
