@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>CV — Nama Anda</title>
+    <title>CV lu</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#0f766e}
@@ -61,7 +61,12 @@
 
         <div class="cv">
             <aside class="panel">
-                <div class="photo">Foto</div>
+                <div class="photo" id="photo" style="position:relative;overflow:hidden">
+                    <img id="photoImg" src="" alt="Foto" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:8px" />
+                    <div id="photoPlaceholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:22px">Foto</div>
+                    <input id="photoInput" type="file" accept="image/*" style="display:none">
+                    <button id="photoChangeBtn" style="position:absolute;right:8px;bottom:8px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,0.45);color:white;border:none;display:none;cursor:pointer">Ubah Foto</button>
+                </div>
 
                 <div class="section" style="margin-top:14px">
                     <div class="label">Kontak</div>
@@ -140,6 +145,10 @@
                 const editBtn = document.getElementById('editBtn');
                 const saveBtn = document.getElementById('saveBtn');
                 const resetBtn = document.getElementById('resetBtn');
+                const photoImg = document.getElementById('photoImg');
+                const photoPlaceholder = document.getElementById('photoPlaceholder');
+                const photoInput = document.getElementById('photoInput');
+                const photoChangeBtn = document.getElementById('photoChangeBtn');
                 const EDITABLE = 'editable';
                 const LS_KEY = 'cv-data-v1';
 
@@ -151,6 +160,8 @@
                     })
                     editBtn.style.display = on ? 'none' : 'inline-block';
                     saveBtn.style.display = on ? 'inline-block' : 'none';
+                    // show photo change button only when editing
+                    if(photoChangeBtn) photoChangeBtn.style.display = on ? 'inline-block' : 'none';
                 }
 
                 function save(){
@@ -158,6 +169,8 @@
                     document.querySelectorAll('[data-key]').forEach(el=>{
                         data[el.dataset.key] = el.innerHTML;
                     });
+                    // save photo (data URL) if present
+                    if(photoImg && photoImg.src) data.photo = photoImg.src;
                     localStorage.setItem(LS_KEY, JSON.stringify(data));
                     setEditing(false);
                     alert('Perubahan disimpan di browser.');
@@ -172,7 +185,30 @@
                             const el = document.querySelector('[data-key="'+k+'"]');
                             if(el) el.innerHTML = data[k];
                         })
+                        if(data.photo && photoImg){
+                            photoImg.src = data.photo;
+                            photoImg.style.display = 'block';
+                            if(photoPlaceholder) photoPlaceholder.style.display = 'none';
+                        }
                     }catch(e){console.error('Gagal memuat data CV',e)}
+                }
+
+                // photo change flow
+                if(photoChangeBtn && photoInput){
+                    photoChangeBtn.addEventListener('click',()=>photoInput.click());
+                    photoInput.addEventListener('change',e=>{
+                        const file = e.target.files && e.target.files[0];
+                        if(!file) return;
+                        const reader = new FileReader();
+                        reader.onload = function(ev){
+                            if(photoImg){
+                                photoImg.src = ev.target.result;
+                                photoImg.style.display = 'block';
+                                if(photoPlaceholder) photoPlaceholder.style.display = 'none';
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    });
                 }
 
                 function reset(){
