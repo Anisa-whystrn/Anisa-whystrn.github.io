@@ -45,12 +45,17 @@
     <div class="page">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
             <div>
-                <h1 style="font-size:22px">Nama Anda</h1>
-                <div class="muted">Posisi yang diinginkan · Kota, Negara</div>
+                <h1 id="cv-name" style="font-size:22px" data-key="name">Nama Anda</h1>
+                <div id="cv-role" class="muted" data-key="role">Posisi yang diinginkan · Kota, Negara</div>
             </div>
             <div style="text-align:right">
                 <div class="muted">Diperbarui: Februari 2026</div>
-                <a class="download" href="#" onclick="window.print();return false">Cetak / Simpan PDF</a>
+                <div style="margin-top:8px">
+                  <button id="editBtn" style="margin-right:8px;padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1;background:white;cursor:pointer">Edit</button>
+                  <button id="saveBtn" style="display:none;margin-right:8px;padding:8px 10px;border-radius:8px;border:none;background:var(--accent);color:white;cursor:pointer">Simpan</button>
+                  <button id="resetBtn" style="padding:8px 10px;border-radius:8px;border:1px solid #f1f5f9;background:white;cursor:pointer">Reset</button>
+                  <a class="download" href="#" onclick="window.print();return false">Cetak / Simpan PDF</a>
+                </div>
             </div>
         </div>
 
@@ -60,15 +65,15 @@
 
                 <div class="section" style="margin-top:14px">
                     <div class="label">Kontak</div>
-                    <div class="contact-row">📧 email@domain.com</div>
-                    <div class="contact-row">📞 +62 812 3456 7890</div>
-                    <div class="contact-row">🔗 github.com/username</div>
-                    <div class="contact-row">🔗 linkedin.com/in/username</div>
+                    <div id="contact-email" class="contact-row editable" data-key="email">📧 email@domain.com</div>
+                    <div id="contact-phone" class="contact-row editable" data-key="phone">📞 +62 812 3456 7890</div>
+                    <div id="contact-github" class="contact-row editable" data-key="github">🔗 github.com/username</div>
+                    <div id="contact-linkedin" class="contact-row editable" data-key="linkedin">🔗 linkedin.com/in/username</div>
                 </div>
 
                 <div class="section">
                     <div class="label">Keahlian</div>
-                    <div>
+                    <div id="skills" class="editable" data-key="skills">
                         <span class="skill">HTML</span>
                         <span class="skill">CSS</span>
                         <span class="skill">JavaScript</span>
@@ -86,27 +91,29 @@
             <main class="panel content">
                 <div class="section">
                     <div class="label">Ringkasan</div>
-                    <div class="muted">Saya adalah profesional di bidang ... (2-3 kalimat ringkas tentang pengalaman, pencapaian, dan target karier).</div>
+                    <div id="summary" class="muted editable" data-key="summary">Saya adalah profesional di bidang ... (2-3 kalimat ringkas tentang pengalaman, pencapaian, dan target karier).</div>
                 </div>
 
                 <div class="section">
                     <div class="label">Pengalaman Kerja</div>
-                    <div class="item">
-                        <div class="job-title">Posisi — Nama Perusahaan</div>
-                        <div class="dates">Jan 2021 — Sekarang · Kota</div>
-                        <div class="muted">- Ringkasan tanggung jawab dan pencapaian utama, mis. meningkatkan X sebesar Y%.</div>
-                    </div>
+                                        <div id="experience" class="editable" data-key="experience">
+                                            <div class="item">
+                                                <div class="job-title">Posisi — Nama Perusahaan</div>
+                                                <div class="dates">Jan 2021 — Sekarang · Kota</div>
+                                                <div class="muted">- Ringkasan tanggung jawab dan pencapaian utama, mis. meningkatkan X sebesar Y%.</div>
+                                            </div>
 
-                    <div class="item">
-                        <div class="job-title">Posisi — Perusahaan Sebelumnya</div>
-                        <div class="dates">Mei 2018 — Des 2020 · Kota</div>
-                        <div class="muted">- Ringkasan tanggung jawab dan pencapaian.</div>
-                    </div>
+                                            <div class="item">
+                                                <div class="job-title">Posisi — Perusahaan Sebelumnya</div>
+                                                <div class="dates">Mei 2018 — Des 2020 · Kota</div>
+                                                <div class="muted">- Ringkasan tanggung jawab dan pencapaian.</div>
+                                            </div>
+                                        </div>
                 </div>
 
                 <div class="section">
                     <div class="label">Pendidikan</div>
-                    <div class="item">
+                    <div id="education" class="item editable" data-key="education">
                         <div class="job-title">Gelar — Nama Universitas</div>
                         <div class="dates">2014 — 2018</div>
                         <div class="muted">Jurusan, prestasi (jika ada)</div>
@@ -115,7 +122,7 @@
 
                 <div class="section">
                     <div class="label">Proyek / Portofolio</div>
-                    <ul>
+                    <ul id="projects" class="editable" data-key="projects">
                         <li><strong>Proyek A</strong> — deskripsi singkat dan tautan.</li>
                         <li><strong>Proyek B</strong> — deskripsi singkat dan tautan.</li>
                     </ul>
@@ -128,6 +135,61 @@
             </main>
         </div>
     </div>
+        <script>
+            (function(){
+                const editBtn = document.getElementById('editBtn');
+                const saveBtn = document.getElementById('saveBtn');
+                const resetBtn = document.getElementById('resetBtn');
+                const EDITABLE = 'editable';
+                const LS_KEY = 'cv-data-v1';
+
+                function setEditing(on){
+                    document.querySelectorAll('.' + EDITABLE).forEach(el=>{
+                        el.contentEditable = on ? 'true' : 'false';
+                        if(on){ el.style.outline = '2px dashed rgba(15,118,110,0.25)'; el.style.padding = '4px' }
+                        else { el.style.outline = ''; el.style.padding = '' }
+                    })
+                    editBtn.style.display = on ? 'none' : 'inline-block';
+                    saveBtn.style.display = on ? 'inline-block' : 'none';
+                }
+
+                function save(){
+                    const data = {};
+                    document.querySelectorAll('[data-key]').forEach(el=>{
+                        data[el.dataset.key] = el.innerHTML;
+                    });
+                    localStorage.setItem(LS_KEY, JSON.stringify(data));
+                    setEditing(false);
+                    alert('Perubahan disimpan di browser.');
+                }
+
+                function load(){
+                    const raw = localStorage.getItem(LS_KEY);
+                    if(!raw) return;
+                    try{
+                        const data = JSON.parse(raw);
+                        Object.keys(data).forEach(k=>{
+                            const el = document.querySelector('[data-key="'+k+'"]');
+                            if(el) el.innerHTML = data[k];
+                        })
+                    }catch(e){console.error('Gagal memuat data CV',e)}
+                }
+
+                function reset(){
+                    if(!confirm('Reset ke isi awal?')) return;
+                    localStorage.removeItem(LS_KEY);
+                    location.reload();
+                }
+
+                editBtn.addEventListener('click',()=>setEditing(true));
+                saveBtn.addEventListener('click',save);
+                resetBtn.addEventListener('click',reset);
+
+                // Initialize
+                load();
+                setEditing(false);
+            })();
+        </script>
 
 </body>
 </html>
