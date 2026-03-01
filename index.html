@@ -6,38 +6,90 @@
     <title>CV lu</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#0f766e}
-        *{box-sizing:border-box}
-        html,body{height:100%}
-        body{font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:#0f172a;margin:0;padding:32px}
-        .page{max-width:900px;margin:0 auto}
-        .cv{display:grid;grid-template-columns:260px 1fr;gap:24px}
-        .panel{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
-        .photo{width:100%;height:260px;background:linear-gradient(135deg,#06b6d4,#7c3aed);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:22px}
-        h1{font-size:20px;margin:0 0 6px}
-        .muted{color:var(--muted);font-size:13px}
-        .section{margin-bottom:18px}
-        .label{font-weight:600;color:#0f172a;margin-bottom:8px}
-        ul{padding-left:18px;margin:6px 0}
-        .skill{display:inline-block;background:#eef2f7;color:#0f172a;padding:6px 10px;border-radius:999px;font-size:13px;margin:4px 6px 0 0}
-        .contact-row{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted);margin-top:6px}
-        .content .item{margin-bottom:12px}
-        .job-title{font-weight:600}
-        .dates{color:var(--muted);font-size:13px}
-        .download{display:inline-block;margin-top:10px;padding:8px 12px;background:var(--accent);color:white;border-radius:8px;text-decoration:none;font-weight:600}
-
-        /* print */
-        @media print{
-            body{background:white;padding:0}
-            .page{max-width:100%;padding:0}
-            .cv{grid-template-columns:220px 1fr;gap:12px}
-            .panel{box-shadow:none;border-radius:0}
-            a[href]:after{content:""}
+        /* color palette */
+        :root {
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --accent: #0f766e;
+            --accent-dark: #134e4a;
         }
 
-        @media (max-width:700px){
-            .cv{grid-template-columns:1fr;}
-            .photo{height:160px}
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; padding: 0; }
+        body {
+            font-family: Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 32px;
+        }
+
+        .page { max-width: 900px; margin: 0 auto; }
+        .cv { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
+
+        .panel {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .photo {
+            width: 100%;
+            height: 260px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+        .photo img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 22px; }
+
+        h1 { font-size: 22px; margin:0 0 4px; }
+        .muted { color: var(--muted); font-size: 13px; }
+
+        .section { margin-bottom: 24px; }
+        .label { font-weight: 600; color: var(--accent-dark); margin-bottom: 8px; border-left: 4px solid var(--accent); padding-left: 8px; }
+        ul { padding-left: 18px; margin: 6px 0; }
+
+        .skill {
+            display: inline-block;
+            background: #eef2f7;
+            color: var(--text);
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            margin: 4px 6px 0 0;
+        }
+
+        .contact-row { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--muted); margin-top: 6px; }
+        .contact-row a { color: var(--muted); text-decoration: none; }
+
+        .content .item { margin-bottom: 16px; }
+        .job-title { font-weight: 600; }
+        .dates { color: var(--muted); font-size: 13px; }
+
+        .download { display: inline-block; margin-top: 10px; padding: 8px 12px; background: var(--accent); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; }
+
+        /* print */
+        @media print {
+            body { background: white; padding: 0; }
+            .page { max-width: 100%; padding: 0; }
+            .cv { grid-template-columns: 220px 1fr; gap: 12px; }
+            .panel { box-shadow: none; border-radius: 0; }
+            a[href]:after { content: ""; }
+        }
+
+        @media (max-width:700px) {
+            .cv { grid-template-columns: 1fr; }
+            .photo { height: 160px; }
         }
     </style>
 </head>
@@ -45,8 +97,8 @@
     <div class="page">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
             <div>
-                <h1 id="cv-name" style="font-size:22px" data-key="name">Nama Anda</h1>
-                <div id="cv-role" class="muted" data-key="role">Posisi yang diinginkan · Kota, Negara</div>
+                <h1 id="cv-name" style="font-size:22px" data-key="name">Anisa Whystrn</h1>
+                <div id="cv-role" class="muted" data-key="role">Full Stack Developer · Jakarta, Indonesia</div>
             </div>
             <div style="text-align:right">
                 <div class="muted">Diperbarui: Februari 2026</div>
@@ -70,19 +122,22 @@
 
                 <div class="section" style="margin-top:14px">
                     <div class="label">Kontak</div>
-                    <div id="contact-email" class="contact-row editable" data-key="email">📧 email@domain.com</div>
-                    <div id="contact-phone" class="contact-row editable" data-key="phone">📞 +62 812 3456 7890</div>
-                    <div id="contact-github" class="contact-row editable" data-key="github">🔗 github.com/username</div>
-                    <div id="contact-linkedin" class="contact-row editable" data-key="linkedin">🔗 linkedin.com/in/username</div>
+                    <div id="contact-email" class="contact-row editable" data-key="email">📧 <a href="mailto:anisa@example.com">anisa@example.com</a></div>
+                    <div id="contact-phone" class="contact-row editable" data-key="phone">📞 +62 812-3456-7890</div>
+                    <div id="contact-github" class="contact-row editable" data-key="github">🔗 <a href="https://github.com/anisa" target="_blank">github.com/anisa</a></div>
+                    <div id="contact-linkedin" class="contact-row editable" data-key="linkedin">🔗 <a href="https://linkedin.com/in/anisa" target="_blank">linkedin.com/in/anisa</a></div>
                 </div>
 
                 <div class="section">
                     <div class="label">Keahlian</div>
                     <div id="skills" class="editable" data-key="skills">
-                        <span class="skill">HTML</span>
+                            <span class="skill">HTML</span>
                         <span class="skill">CSS</span>
                         <span class="skill">JavaScript</span>
                         <span class="skill">React</span>
+                        <span class="skill">Node.js</span>
+                        <span class="skill">Python</span>
+                        <span class="skill">Git &amp; GitHub</span>
                     </div>
                 </div>
 
@@ -96,22 +151,26 @@
             <main class="panel content">
                 <div class="section">
                     <div class="label">Ringkasan</div>
-                    <div id="summary" class="muted editable" data-key="summary">Saya adalah profesional di bidang ... (2-3 kalimat ringkas tentang pengalaman, pencapaian, dan target karier).</div>
+                    <div id="summary" class="muted editable" data-key="summary">Pengembang perangkat lunak dengan 5+ tahun pengalaman membangun aplikasi web modern menggunakan JavaScript, React, dan Node.js. Terbukti meningkatkan performa aplikasi hingga 30% dan memimpin tim lintas fungsi untuk menyelesaikan fitur utama tepat waktu.</div>
                 </div>
 
                 <div class="section">
                     <div class="label">Pengalaman Kerja</div>
                                         <div id="experience" class="editable" data-key="experience">
                                             <div class="item">
-                                                <div class="job-title">Posisi — Nama Perusahaan</div>
-                                                <div class="dates">Jan 2021 — Sekarang · Kota</div>
-                                                <div class="muted">- Ringkasan tanggung jawab dan pencapaian utama, mis. meningkatkan X sebesar Y%.</div>
+                                                <div class="job-title">Senior Frontend Developer — PT. Teknologi Nusantara</div>
+                                                <div class="dates">Jan 2021 — Sekarang · Jakarta</div>
+                                                <div class="muted">- Memimpin pengembangan antarmuka pengguna untuk platform e‑commerce menggunakan React dan Redux.
+                                                <br>- Mengoptimalkan waktu muat halaman sehingga bounce rate turun 25% dan konversi meningkat.
+                                                </div>
                                             </div>
 
                                             <div class="item">
-                                                <div class="job-title">Posisi — Perusahaan Sebelumnya</div>
-                                                <div class="dates">Mei 2018 — Des 2020 · Kota</div>
-                                                <div class="muted">- Ringkasan tanggung jawab dan pencapaian.</div>
+                                                <div class="job-title">Web Developer — Studio Kreatif</div>
+                                                <div class="dates">Mei 2018 — Des 2020 · Bandung</div>
+                                                <div class="muted">- Membangun situs klien responsif dengan HTML, CSS, dan JavaScript.
+                                                <br>- Berkolaborasi dengan desainer untuk mengimplementasikan UI pixel‑perfect dan memastikan aksesibilitas.
+                                                </div>
                                             </div>
                                         </div>
                 </div>
@@ -119,17 +178,17 @@
                 <div class="section">
                     <div class="label">Pendidikan</div>
                     <div id="education" class="item editable" data-key="education">
-                        <div class="job-title">Gelar — Nama Universitas</div>
+                        <div class="job-title">Sarjana Ilmu Komputer — Universitas Indonesia</div>
                         <div class="dates">2014 — 2018</div>
-                        <div class="muted">Jurusan, prestasi (jika ada)</div>
+                        <div class="muted">IPK 3.75, ketua himpunan mahasiswa, penghargaan prestasi akademik.</div>
                     </div>
                 </div>
 
                 <div class="section">
                     <div class="label">Proyek / Portofolio</div>
                     <ul id="projects" class="editable" data-key="projects">
-                        <li><strong>Proyek A</strong> — deskripsi singkat dan tautan.</li>
-                        <li><strong>Proyek B</strong> — deskripsi singkat dan tautan.</li>
+                        <li><strong>AppMania</strong> — aplikasi manajemen tugas dengan fitur kolaborasi real‑time. <a href="#">github.com/anisa/appmania</a></li>
+                        <li><strong>Portfolio</strong> — situs pribadi menampilkan proyek dan blog teknis. <a href="#">anisa-whystrn.github.io/portfolio</a></li>
                     </ul>
                 </div>
 
