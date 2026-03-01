@@ -1,290 +1,345 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>CV lu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Estetik Saya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        /* color palette */
         :root {
-            --bg: #f3f4f6;
-            --card: #ffffff;
-            --text: #111827;
-            --muted: #6b7280;
-            --accent: #0f766e;
-            --accent-dark: #134e4a;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --accent: #6c5ce7;
+            --accent-hover: #5649c0;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        * { box-sizing: border-box; }
-        html, body { height: 100%; margin: 0; padding: 0; }
+        [data-theme="dark"] {
+            --bg-color: #1e1e2e;
+            --card-bg: #2d2d44;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.4s ease; }
+        
         body {
-            font-family: Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            padding: 32px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        .page { max-width: 900px; margin: 0 auto; }
-        .cv { display: grid; grid-template-columns: 260px 1fr; gap: 32px; }
-
-        .panel {
-            background: var(--card);
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center;
+            z-index: 2;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .photo {
-            width: 100%;
-            height: 260px;
-            background: var(--accent);
-            border-radius: 8px;
+        /* Class ini akan ditambahkan lewat JS saat CV dibuka */
+        body.cv-is-open .hero {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none; /* Agar tidak bisa diklik saat tertutup */
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--accent), #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            min-height: 1.5em;
+        }
+
+        .btn-main {
+            padding: 12px 30px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-main:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+        }
+
+        /* --- CV CONTAINER (MODAL) --- */
+        .cv-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            opacity: 0;
+            visibility: hidden;
+            overflow-y: auto;
+            z-index: 10; /* Z-index lebih tinggi dari hero */
+        }
+
+        .cv-container.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* --- ISI CV --- */
+        .cv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cv-section { margin-bottom: 25px; }
+        .cv-section h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .job-item, .edu-item { margin-bottom: 15px; }
+        .job-title { font-weight: 600; font-size: 1.1rem; }
+        .job-date { font-size: 0.9rem; color: var(--text-secondary); font-style: italic; }
+        .job-desc { font-size: 0.95rem; line-height: 1.6; margin-top: 5px; }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill-tag {
+            background: var(--bg-color);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* --- FITUR TAMBAHAN --- */
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 20;
+        }
+
+        .icon-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--text-secondary);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 22px;
-            position: relative;
-            overflow: hidden;
         }
-        .photo img { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 22px; }
+        .icon-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
 
-        h1 { font-size: 22px; margin:0 0 4px; }
-        .muted { color: var(--muted); font-size: 13px; }
-
-        .section { margin-bottom: 24px; }
-        .label { font-weight: 600; color: var(--accent-dark); margin-bottom: 8px; border-left: 4px solid var(--accent); padding-left: 8px; }
-        ul { padding-left: 18px; margin: 6px 0; }
-
-        .skill {
-            display: inline-block;
-            background: #eef2f7;
-            color: var(--text);
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 13px;
-            margin: 4px 6px 0 0;
+        .close-cv {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            z-index: 20;
         }
+        .close-cv:hover { color: var(--accent); transform: rotate(90deg); }
 
-        .contact-row { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--muted); margin-top: 6px; }
-        .contact-row a { color: var(--muted); text-decoration: none; }
+        /* Scrollbar estetik */
+        .cv-container::-webkit-scrollbar { width: 8px; }
+        .cv-container::-webkit-scrollbar-track { background: var(--bg-color); }
+        .cv-container::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
-        .content .item { margin-bottom: 16px; }
-        .job-title { font-weight: 600; }
-        .dates { color: var(--muted); font-size: 13px; }
-
-        .download { display: inline-block; margin-top: 10px; padding: 8px 12px; background: var(--accent); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; }
-
-        /* print */
-        @media print {
-            body { background: white; padding: 0; }
-            .page { max-width: 100%; padding: 0; }
-            .cv { grid-template-columns: 220px 1fr; gap: 12px; }
-            .panel { box-shadow: none; border-radius: 0; }
-            a[href]:after { content: ""; }
-        }
-
-        @media (max-width:700px) {
-            .cv { grid-template-columns: 1fr; }
-            .photo { height: 160px; }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.5rem; }
+            .cv-container { width: 95%; padding: 20px; }
+            .cv-header { flex-direction: column; text-align: center; gap: 10px; }
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+
+    <!-- Tombol Fitur -->
+    <div class="controls">
+        <button class="icon-btn" onclick="toggleTheme()" title="Ganti Mode Gelap/Terang">
+            <i class="fas fa-moon"></i>
+        </button>
+        <button class="icon-btn" onclick="window.print()" title="Download PDF / Print">
+            <i class="fas fa-print"></i>
+        </button>
+    </div>
+
+    <!-- Bagian Awal (Hero) -->
+    <div class="hero">
+        <h1 id="myName">Anisa Wahyu Satriani</h1>
+        <p><span id="typing-text"></span><span class="cursor">|</span></p>
+        <button class="btn-main" onclick="openCV()">
+            <i class="fas fa-file-alt"></i> Lihat CV Lengkap
+        </button>
+    </div>
+
+    <!-- Bagian CV (Modal) -->
+    <div class="cv-container" id="cvModal">
+        <button class="close-cv" onclick="closeCV()"><i class="fas fa-times"></i></button>
+        
+        <div class="cv-header">
             <div>
-                <h1 id="cv-name" style="font-size:22px" data-key="name">Anisa Whystrn</h1>
-                <div id="cv-role" class="muted" data-key="role">Full Stack Developer · Jakarta, Indonesia</div>
+                <h2 style="font-size: 2rem;">Anisa Wahyu Satriani</h2>
+                <p style="color: var(--accent);">Full Stack Developer & UI Designer</p>
             </div>
-            <div style="text-align:right">
-                <div class="muted">Diperbarui: Februari 2026</div>
-                <div style="margin-top:8px">
-                  <button id="editBtn" style="margin-right:8px;padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1;background:white;cursor:pointer">Edit</button>
-                  <button id="saveBtn" style="display:none;margin-right:8px;padding:8px 10px;border-radius:8px;border:none;background:var(--accent);color:white;cursor:pointer">Simpan</button>
-                  <button id="resetBtn" style="padding:8px 10px;border-radius:8px;border:1px solid #f1f5f9;background:white;cursor:pointer">Reset</button>
-                  <a class="download" href="#" onclick="window.print();return false">Cetak / Simpan PDF</a>
-                </div>
+            <div style="text-align: right; font-size: 0.9rem; color: var(--text-secondary);">
+                <p><i class="fas fa-envelope"></i> anisawahyusatriani@email.com</p>
+                <p><i class="fas fa-phone"></i> +62 822 1306 0704</p>
+                <p><i class="fas fa-map-marker-alt"></i> Kendari, Indonesia</p>
             </div>
         </div>
 
-        <div class="cv">
-            <aside class="panel">
-                <div class="photo" id="photo" style="position:relative;overflow:hidden">
-                    <img id="photoImg" src="" alt="Foto" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:8px" />
-                    <div id="photoPlaceholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:22px">Foto</div>
-                    <input id="photoInput" type="file" accept="image/*" style="display:none">
-                    <button id="photoChangeBtn" style="position:absolute;right:8px;bottom:8px;padding:6px 8px;border-radius:8px;background:rgba(0,0,0,0.45);color:white;border:none;display:none;cursor:pointer">Ubah Foto</button>
-                </div>
+        <div class="cv-section">
+            <h3>Tentang Saya</h3>
+            <p style="line-height: 1.6;">
+                Saya adalah pengembang web yang bersemangat dengan pengalaman 6 bulan dalam membangun aplikasi yang responsif dan user-friendly. Saya suka memecahkan masalah kompleks dengan desain yang sederhana dan elegan.
+            </p>
+        </div>
 
-                <div class="section" style="margin-top:14px">
-                    <div class="label">Kontak</div>
-                    <div id="contact-email" class="contact-row editable" data-key="email">📧 <a href="mailto:anisa@example.com">anisa@example.com</a></div>
-                    <div id="contact-phone" class="contact-row editable" data-key="phone">📞 +62 812-3456-7890</div>
-                    <div id="contact-github" class="contact-row editable" data-key="github">🔗 <a href="https://github.com/anisa" target="_blank">github.com/anisa</a></div>
-                    <div id="contact-linkedin" class="contact-row editable" data-key="linkedin">🔗 <a href="https://linkedin.com/in/anisa" target="_blank">linkedin.com/in/anisa</a></div>
-                </div>
+        <div class="cv-section">
+            <h3>Pengalaman Kerja</h3>
+            <div class="job-item">
+                <div class="job-title">Junior Web Developer</div>
+                <div class="job-date">2025 - Sekarang</div>
+                <div class="job-desc">Bertanggung jawab atas pengembangan frontend menggunakan laravel dan optimasi performa website perusahaan.</div>
+            </div>
+            <div class="job-item">
+                <div class="job-title">Junior Designer - Creative Agency</div>
+                <div class="job-date">2025 - 2026</div>
+                <div class="job-desc">Mendesain UI/UX untuk aplikasi mobile klien dan membuat prototipe interaktif.</div>
+            </div>
+        </div>
 
-                <div class="section">
-                    <div class="label">Keahlian</div>
-                    <div id="skills" class="editable" data-key="skills">
-                            <span class="skill">HTML</span>
-                        <span class="skill">CSS</span>
-                        <span class="skill">JavaScript</span>
-                        <span class="skill">React</span>
-                        <span class="skill">Node.js</span>
-                        <span class="skill">Python</span>
-                        <span class="skill">Git &amp; GitHub</span>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <div class="label">Bahasa</div>
-                    <div class="muted">Indonesia (Native)</div>
-                    <div class="muted">English (Professional)</div>
-                </div>
-            </aside>
-
-            <main class="panel content">
-                <div class="section">
-                    <div class="label">Ringkasan</div>
-                    <div id="summary" class="muted editable" data-key="summary">Pengembang perangkat lunak dengan 5+ tahun pengalaman membangun aplikasi web modern menggunakan JavaScript, React, dan Node.js. Terbukti meningkatkan performa aplikasi hingga 30% dan memimpin tim lintas fungsi untuk menyelesaikan fitur utama tepat waktu.</div>
-                </div>
-
-                <div class="section">
-                    <div class="label">Pengalaman Kerja</div>
-                                        <div id="experience" class="editable" data-key="experience">
-                                            <div class="item">
-                                                <div class="job-title">Senior Frontend Developer — PT. Teknologi Nusantara</div>
-                                                <div class="dates">Jan 2021 — Sekarang · Jakarta</div>
-                                                <div class="muted">- Memimpin pengembangan antarmuka pengguna untuk platform e‑commerce menggunakan React dan Redux.
-                                                <br>- Mengoptimalkan waktu muat halaman sehingga bounce rate turun 25% dan konversi meningkat.
-                                                </div>
-                                            </div>
-
-                                            <div class="item">
-                                                <div class="job-title">Web Developer — Studio Kreatif</div>
-                                                <div class="dates">Mei 2018 — Des 2020 · Bandung</div>
-                                                <div class="muted">- Membangun situs klien responsif dengan HTML, CSS, dan JavaScript.
-                                                <br>- Berkolaborasi dengan desainer untuk mengimplementasikan UI pixel‑perfect dan memastikan aksesibilitas.
-                                                </div>
-                                            </div>
-                                        </div>
-                </div>
-
-                <div class="section">
-                    <div class="label">Pendidikan</div>
-                    <div id="education" class="item editable" data-key="education">
-                        <div class="job-title">Sarjana Ilmu Komputer — Universitas Indonesia</div>
-                        <div class="dates">2014 — 2018</div>
-                        <div class="muted">IPK 3.75, ketua himpunan mahasiswa, penghargaan prestasi akademik.</div>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <div class="label">Proyek / Portofolio</div>
-                    <ul id="projects" class="editable" data-key="projects">
-                        <li><strong>AppMania</strong> — aplikasi manajemen tugas dengan fitur kolaborasi real‑time. <a href="#">github.com/anisa/appmania</a></li>
-                        <li><strong>Portfolio</strong> — situs pribadi menampilkan proyek dan blog teknis. <a href="#">anisa-whystrn.github.io/portfolio</a></li>
-                    </ul>
-                </div>
-
-                <div class="section">
-                    <div class="label">Referensi</div>
-                    <div class="muted">Tersedia atas permintaan.</div>
-                </div>
-            </main>
+        <div class="cv-section">
+            <h3>Keahlian</h3>
+            <div class="skills-grid">
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">php</span>
+                <span class="skill-tag">Figma</span>
+                <span class="skill-tag">Node JS</span>
+                <span class="skill-tag">Git</span>
+            </div>
+        </div>
+        
+        <div class="cv-section">
+            <h3>Pendidikan</h3>
+            <div class="edu-item">
+                <div class="job-title">Universitas Halu Oleo</div>
+                <div class="job-date">Belum Lulus</div>
+                <div class="job-desc">Program Studi Ilmu Komputer</div>
+            </div>
         </div>
     </div>
-        <script>
-            (function(){
-                const editBtn = document.getElementById('editBtn');
-                const saveBtn = document.getElementById('saveBtn');
-                const resetBtn = document.getElementById('resetBtn');
-                const photoImg = document.getElementById('photoImg');
-                const photoPlaceholder = document.getElementById('photoPlaceholder');
-                const photoInput = document.getElementById('photoInput');
-                const photoChangeBtn = document.getElementById('photoChangeBtn');
-                const EDITABLE = 'editable';
-                const LS_KEY = 'cv-data-v1';
 
-                function setEditing(on){
-                    document.querySelectorAll('.' + EDITABLE).forEach(el=>{
-                        el.contentEditable = on ? 'true' : 'false';
-                        if(on){ el.style.outline = '2px dashed rgba(15,118,110,0.25)'; el.style.padding = '4px' }
-                        else { el.style.outline = ''; el.style.padding = '' }
-                    })
-                    editBtn.style.display = on ? 'none' : 'inline-block';
-                    saveBtn.style.display = on ? 'inline-block' : 'none';
-                    // show photo change button only when editing
-                    if(photoChangeBtn) photoChangeBtn.style.display = on ? 'inline-block' : 'none';
-                }
+    <script>
+        // --- 1. Fitur Typing Effect ---
+        const textElement = document.getElementById('typing-text');
+        const texts = ["Web Developer", "UI/UX Designer", "Freelancer"];
+        let count = 0;
+        let index = 0;
+        let currentText = "";
+        let letter = "";
 
-                function save(){
-                    const data = {};
-                    document.querySelectorAll('[data-key]').forEach(el=>{
-                        data[el.dataset.key] = el.innerHTML;
-                    });
-                    // save photo (data URL) if present
-                    if(photoImg && photoImg.src) data.photo = photoImg.src;
-                    localStorage.setItem(LS_KEY, JSON.stringify(data));
-                    setEditing(false);
-                    alert('Perubahan disimpan di browser.');
-                }
+        (function type() {
+            if (count === texts.length) { count = 0; }
+            currentText = texts[count];
+            letter = currentText.slice(0, ++index);
+            textElement.textContent = letter;
+            if (letter.length === currentText.length) {
+                count++;
+                index = 0;
+                setTimeout(type, 2000);
+            } else {
+                setTimeout(type, 100);
+            }
+        })();
 
-                function load(){
-                    const raw = localStorage.getItem(LS_KEY);
-                    if(!raw) return;
-                    try{
-                        const data = JSON.parse(raw);
-                        Object.keys(data).forEach(k=>{
-                            const el = document.querySelector('[data-key="'+k+'"]');
-                            if(el) el.innerHTML = data[k];
-                        })
-                        if(data.photo && photoImg){
-                            photoImg.src = data.photo;
-                            photoImg.style.display = 'block';
-                            if(photoPlaceholder) photoPlaceholder.style.display = 'none';
-                        }
-                    }catch(e){console.error('Gagal memuat data CV',e)}
-                }
+        // --- 2. Fitur Buka/Tutup CV (DIPERBAIKI) ---
+        const cvModal = document.getElementById('cvModal');
+        const body = document.body;
 
-                // photo change flow
-                if(photoChangeBtn && photoInput){
-                    photoChangeBtn.addEventListener('click',()=>photoInput.click());
-                    photoInput.addEventListener('change',e=>{
-                        const file = e.target.files && e.target.files[0];
-                        if(!file) return;
-                        const reader = new FileReader();
-                        reader.onload = function(ev){
-                            if(photoImg){
-                                photoImg.src = ev.target.result;
-                                photoImg.style.display = 'block';
-                                if(photoPlaceholder) photoPlaceholder.style.display = 'none';
-                            }
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                }
+        function openCV() {
+            // Tambahkan class 'active' ke modal CV
+            cvModal.classList.add('active');
+            // Tambahkan class 'cv-is-open' ke BODY (ini yang membuat Hero hilang)
+            body.classList.add('cv-is-open');
+            // Matikan scroll background
+            body.style.overflow = 'hidden'; 
+        }
 
-                function reset(){
-                    if(!confirm('Reset ke isi awal?')) return;
-                    localStorage.removeItem(LS_KEY);
-                    location.reload();
-                }
+        function closeCV() {
+            // Hapus class 'active' dari modal CV
+            cvModal.classList.remove('active');
+            // Hapus class 'cv-is-open' dari BODY (ini yang memunculkan Hero lagi)
+            body.classList.remove('cv-is-open');
+            // Hidupkan scroll background
+            body.style.overflow = 'auto';
+        }
 
-                editBtn.addEventListener('click',()=>setEditing(true));
-                saveBtn.addEventListener('click',save);
-                resetBtn.addEventListener('click',reset);
-
-                // Initialize
-                load();
-                setEditing(false);
-            })();
-        </script>
-
+        // --- 3. Fitur Dark Mode ---
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const btnIcon = document.querySelector('.icon-btn i');
+            
+            if (currentTheme === "dark") {
+                document.documentElement.setAttribute("data-theme", "light");
+                btnIcon.classList.remove('fa-sun');
+                btnIcon.classList.add('fa-moon');
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                btnIcon.classList.remove('fa-moon');
+                btnIcon.classList.add('fa-sun');
+            }
+        }
+    </script>
 </body>
 </html>
